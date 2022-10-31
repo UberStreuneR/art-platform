@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  backend:
+  api:
     image: platform_api
     command: uvicorn --reload --host 0.0.0.0 --port 8000 platform_api.main:app
     ports:
@@ -26,3 +26,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./images:/var/local/app/images
+    depends_on:
+      - api
